@@ -1,7 +1,7 @@
 /* summator.cpp */
 
 #include "summator.h"
-#include "example_rust/src/lib.rs.h"
+#include "lib.rs.h"
 
 void Summator::add(int p_value) {
 	count = add_rs(count, p_value);

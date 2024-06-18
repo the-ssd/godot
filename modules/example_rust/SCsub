@@ -4,9 +4,13 @@ cwd = os.getcwd()
 
 Import('env')
 
-subprocess.run(["cargo", "build", "-q"])
+print("RUST: Compiling rust")
+return_code = subprocess.run(["cargo", "build", "-q"]).returncode
 
-env.add_source_files(env.modules_sources, "*.cpp") # Add all cpp files to the build
-env.Append(LIBS=['example_rust'])
-env.Append(LIBPATH=[cwd + '/target/debug/'])
-env.Append(CPPPATH=[cwd + '/target/cxxbridge/'])
+if return_code != 0:
+    print("WARNING: Building rust failed")
+else:
+    env.add_source_files(env.modules_sources, "*.cpp")
+    env.Append(LIBS=['example_rust'])
+    env.Append(LIBPATH=[cwd + '/target/debug/'])
+    env.Append(CPPPATH=[cwd + '/target/cxxbridge/example_rust/src'])
