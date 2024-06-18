@@ -2,6 +2,8 @@
 
 #include "register_types.h"
 
+#ifndef RUST_BUILD_FAILED
+
 #include "core/object/class_db.h"
 #include "summator.h"
 
@@ -18,3 +20,9 @@ void uninitialize_example_rust_module(ModuleInitializationLevel p_level) {
 	}
    // Nothing to do here in this example.
 }
+#else
+
+void initialize_example_rust_module(ModuleInitializationLevel p_level) {}
+void uninitialize_example_rust_module(ModuleInitializationLevel p_level) {}
+
+#endif // RUST_BUILD_FAILED

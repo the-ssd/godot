@@ -7,10 +7,16 @@ Import('env')
 print("RUST: Compiling rust")
 return_code = subprocess.run(["cargo", "build", "-q"]).returncode
 
+
 if return_code != 0:
     print("WARNING: Building rust failed")
+    module_env = env.Clone()
+    module_env.add_source_files(env.modules_sources, "register_types.cpp")
+    module_env.Append(CPPDEFINES=['RUST_BUILD_FAILED'])
 else:
-    env.add_source_files(env.modules_sources, "*.cpp")
-    env.Append(LIBS=['example_rust'])
     env.Append(LIBPATH=[cwd + '/target/debug/'])
-    env.Append(CPPPATH=[cwd + '/target/cxxbridge/example_rust/src'])
+    env.Append(LIBS=['example_rust'])
+    
+    module_env = env.Clone()
+    module_env.add_source_files(env.modules_sources, "*.cpp")
+    module_env.Append(CPPPATH=[cwd + '/target/cxxbridge/example_rust/src'])
