@@ -1,0 +1,12 @@
+import subprocess
+import os
+cwd = os.getcwd()
+
+Import('env')
+
+subprocess.run(["cargo", "build", "-q"])
+
+env.add_source_files(env.modules_sources, "*.cpp") # Add all cpp files to the build
+env.Append(LIBS=['example_rust'])
+env.Append(LIBPATH=[cwd + '/target/debug/'])
+env.Append(CPPPATH=[cwd + '/target/cxxbridge/'])
